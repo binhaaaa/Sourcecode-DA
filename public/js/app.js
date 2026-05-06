@@ -53,6 +53,10 @@ async function loadPage(page) {
                 if (page === "rooms" && typeof loadRooms === "function") {
                     loadRooms();
                 }
+
+                if (page === "employees" && typeof loadRooms === "function") {
+                    loadEmployees();S
+                }
             };
 
             document.body.appendChild(script);

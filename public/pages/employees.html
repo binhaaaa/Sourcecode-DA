@@ -1,11 +1,61 @@
-<h3>Nhân viên</h3>
-<div id="emp"></div>
+<h3>👨‍💼 Quản lý nhân viên</h3>
 
-<script>
-fetch("/api/employees")
-.then(res => res.json())
-.then(data => {
-    document.getElementById("emp").innerHTML =
-        JSON.stringify(data);
-});
-</script>
+<input id="searchInput" class="form-control mb-3"
+       placeholder="Tìm theo tên..."
+       onkeyup="searchEmployee()">
+
+<div class="table-wrapper">
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Họ tên</th>
+            <th>CCCD</th>
+            <th>SĐT</th>
+            <th>Chức vụ</th>
+            <th>Lương</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody id="employeeTable"></tbody>
+</table>
+</div>
+
+<h4>➕ Thêm / Sửa</h4>
+
+<div class="row">
+    <div class="col-md-6">
+        <input id="name" class="form-control mb-2" placeholder="Họ tên">
+    </div>
+    <div class="col-md-6">
+        <input id="cccd" class="form-control mb-2" placeholder="CCCD">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <input id="phone" class="form-control mb-2" placeholder="SĐT">
+    </div>
+    <div class="col-md-6">
+        <input id="salary" type="number" class="form-control mb-2" placeholder="Lương">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <select id="role" class="form-control mb-2">
+            <option value="1">Quản lý</option>
+            <option value="2">Nhân viên</option>
+        </select>
+    </div>
+    <div class="col-md-6">
+        <select id="status" class="form-control mb-2">
+            <option value="Đang làm việc">Đang làm việc</option>
+            <option value="Nghỉ việc">Nghỉ việc</option>
+        </select>
+    </div>
+</div>
+
+<button class="btn btn-primary" onclick="saveEmployee()">💾 Lưu</button>
+<button class="btn btn-secondary" onclick="resetForm()">🔄 Reset</button>
