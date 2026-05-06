@@ -1,0 +1,77 @@
+<h3>🏠 Quản lý phòng</h3>
+
+<!-- 🔍 Search -->
+<input id="searchRoom" class="form-control mb-3"
+       placeholder="Tìm theo số phòng..."
+       onkeyup="searchRoom()">
+
+<!-- 📋 TABLE -->
+<table class="table table-bordered table-hover">
+    <thead class="table-dark text-center">
+        <tr>
+            <th>ID</th>
+            <th>Block</th>
+            <th>Tầng</th>
+            <th>Số phòng</th>
+            <th>Giá</th>
+            <th>Số người</th>
+            <th>Trạng thái</th>
+            <th>Mô tả</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody id="roomTable"></tbody>
+</table>
+
+<!-- ➕ FORM -->
+<h4>➕ Thêm / Sửa phòng</h4>
+
+<input type="hidden" id="roomId">
+
+<div class="row">
+    <div class="col-md-6">
+        <label>Block</label>
+        <select id="blockSelect" class="form-control mb-2"></select>
+    </div>
+
+    <div class="col-md-6">
+        <label>Tầng</label>
+        <select id="floorSelect" class="form-control mb-2"></select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <input id="roomNumber" class="form-control mb-2" placeholder="Số phòng (VD: A101)">
+    </div>
+
+    <div class="col-md-6">
+        <input id="price" type="number" class="form-control mb-2" placeholder="Giá phòng">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <input id="maxPeople" type="number" class="form-control mb-2" placeholder="Số người tối đa">
+    </div>
+
+    <div class="col-md-6">
+        <select id="status" class="form-control mb-2">
+            <option value="Trống">Trống</option>
+            <option value="Đang ở">Đang ở</option>
+            <option value="Bảo trì">Bảo trì</option>
+            <option value="Đã cọc">Đã cọc</option>
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <input id="description" class="form-control mb-2" placeholder="Mô tả">
+    </div>
+</div>
+
+<div class="mt-2">
+    <button class="btn btn-primary" onclick="saveRoom()">💾 Lưu</button>
+    <button class="btn btn-secondary" onclick="resetRoom()">🔄 Reset</button>
+</div>

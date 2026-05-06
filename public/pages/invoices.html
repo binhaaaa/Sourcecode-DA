@@ -1,0 +1,11 @@
+<h3>Hóa đơn</h3>
+<div id="data"></div>
+
+<script>
+fetch("/api/invoices")
+.then(res => res.json())
+.then(data => {
+    document.getElementById("data").innerHTML =
+        JSON.stringify(data);
+});
+</script>

@@ -1,0 +1,57 @@
+body {
+    display: flex;
+    font-family: Arial, sans-serif;
+}
+
+/* Sidebar giữ nguyên */
+.sidebar {
+    width: 220px;
+    background: #343a40;
+    color: white;
+    height: 100vh;
+    padding: 10px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.sidebar a:hover {
+    background: #495057;
+}
+
+/* Content */
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* 🔥 FIX TABLE */
+table {
+    width: 100%;
+    table-layout: fixed; /* QUAN TRỌNG */
+}
+
+th, td {
+    text-align: center;
+    vertical-align: middle;
+    word-wrap: break-word;
+}
+
+/* 🎯 Hành động */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.action-buttons button {
+    padding: 5px 10px;
+}
+
+/* 🎨 Form */
+input, select {
+    margin-bottom: 10px;
+}

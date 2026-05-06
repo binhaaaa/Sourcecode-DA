@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Motel Admin</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body { display: flex; }
+
+        .sidebar {
+            width: 220px;
+            height: 100vh;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            background: #34495e;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            background: #f5f6fa;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h4>🏠 Motel</h4>
+
+    <a onclick="loadPage('dashboard')">Dashboard</a>
+    <a onclick="loadPage('rooms')">Phòng</a>
+    <a onclick="loadPage('tenants')">Khách</a>
+    <a onclick="loadPage('invoices')">Hóa đơn</a>
+    <a onclick="loadPage('employees')">Nhân viên</a>
+</div>
+
+<div class="content">
+    <h2 id="title"></h2>
+    <div id="main"></div>
+</div>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>

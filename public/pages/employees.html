@@ -1,0 +1,11 @@
+<h3>Nhân viên</h3>
+<div id="emp"></div>
+
+<script>
+fetch("/api/employees")
+.then(res => res.json())
+.then(data => {
+    document.getElementById("emp").innerHTML =
+        JSON.stringify(data);
+});
+</script>
