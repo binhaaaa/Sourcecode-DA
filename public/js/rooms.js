@@ -7,24 +7,32 @@ if (!window.roomsModule) {
 
     // ================= LOAD ROOMS =================
     async function loadRooms() {
+
         try {
+
             console.log("🔥 loadRooms chạy");
 
             const res = await fetch("/api/rooms");
+
             rooms = await res.json();
 
             renderRooms();
-            loadBlocks();
+
+            await loadBlocks();
 
         } catch (err) {
+
             console.error("❌ Lỗi loadRooms:", err);
         }
     }
 
+    // ================= RENDER =================
     function renderRooms(data = rooms) {
+
         let html = "";
 
         data.forEach(r => {
+
             html += `
             <tr>
                 <td>${r.RoomID}</td>
@@ -34,117 +42,259 @@ if (!window.roomsModule) {
                 <td>${r.Price}</td>
                 <td>${r.MaxOccupants}</td>
                 <td>${r.Status}</td>
-                <td>${r.Description || ""}</td>
-                <td>
-                    <button class="btn btn-warning btn-sm" onclick="editRoom(${r.RoomID})">Sửa</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteRoom(${r.RoomID})">Xóa</button>
-                </td>
-            </tr>`;
+                <td class="description-cell">
+    ${r.Description || ""}
+</td>
+
+<td class="action-cell">
+    <button 
+        class="btn btn-warning btn-sm"
+        onclick="editRoom(${r.RoomID})">
+        Sửa
+    </button>
+
+    <button 
+        class="btn btn-danger btn-sm"
+        onclick="deleteRoom(${r.RoomID})">
+        Xóa
+    </button>
+</td>
+            </tr>
+            `;
         });
 
         document.getElementById("roomTable").innerHTML = html;
     }
 
+    // ================= LOAD BLOCK =================
     async function loadBlocks() {
-        const res = await fetch("/api/blocks");
-        const blocks = await res.json();
 
-        let html = `<option value="">-- Chọn Block --</option>`;
+        try {
 
-        blocks.forEach(b => {
-            html += `<option value="${b.BlockID}">${b.BlockName}</option>`;
-        });
+            const res = await fetch("/api/blocks");
 
-        document.getElementById("blockSelect").innerHTML = html;
-    }
+            const blocks = await res.json();
 
-    async function loadFloors() {
-        const blockId = document.getElementById("blockSelect").value;
-        if (!blockId) return;
+            let html =
+                `<option value="">-- Chọn Block --</option>`;
 
-        const res = await fetch("/api/floors/" + blockId);
-        const floors = await res.json();
+            blocks.forEach(b => {
 
-        let html = `<option value="">-- Chọn Tầng --</option>`;
-
-        floors.forEach(f => {
-            html += `<option value="${f.FloorID}">${f.FloorName}</option>`;
-        });
-
-        document.getElementById("floorSelect").innerHTML = html;
-    }
-
-    async function saveRoom() {
-        const data = {
-            FloorID: document.getElementById("floorSelect").value,
-            RoomNumber: document.getElementById("roomNumber").value,
-            Price: document.getElementById("price").value,
-            MaxOccupants: document.getElementById("maxPeople").value,
-            Status: document.getElementById("status").value,
-            Description: document.getElementById("description").value
-        };
-
-        if (editId) {
-            await fetch("/api/rooms/" + editId, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
+                html += `
+                    <option value="${b.BlockID}">
+                        ${b.BlockName}
+                    </option>
+                `;
             });
-        } else {
-            await fetch("/api/rooms", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            });
+
+            document.getElementById("blockSelect").innerHTML =
+                html;
+
+        } catch (err) {
+
+            console.error("❌ Lỗi loadBlocks:", err);
         }
-
-        resetRoom();
-        loadRooms();
     }
 
-    function editRoom(id) {
-        const r = rooms.find(x => x.RoomID == id);
+    // ================= LOAD FLOOR =================
+    async function loadFloors() {
 
-        document.getElementById("blockSelect").value = r.BlockID;
+    const blockId =
+        document.getElementById("blockSelect").value;
 
-        loadFloors().then(() => {
-            document.getElementById("floorSelect").value = r.FloorID;
-        });
+    if (!blockId) return;
 
-        document.getElementById("roomNumber").value = r.RoomNumber;
-        document.getElementById("price").value = r.Price;
-        document.getElementById("maxPeople").value = r.MaxOccupants;
-        document.getElementById("status").value = r.Status;
-        document.getElementById("description").value = r.Description;
+    const res =
+        await fetch("/api/floors/" + blockId);
 
-        editId = id;
+    const floors = await res.json();
+
+    console.log("floors =", floors);
+
+    let html =
+        `<option value="">-- Chọn Tầng --</option>`;
+
+    floors.forEach(f => {
+
+        html += `
+            <option value="${String(f.FloorID)}">
+                ${f.FloorName}
+            </option>
+        `;
+    });
+
+    document.getElementById("floorSelect").innerHTML =
+        html;
+}
+
+    // ================= SAVE =================
+    async function saveRoom() {
+
+        try {
+
+            const data = {
+
+                FloorID:
+                    document.getElementById("floorSelect").value,
+
+                RoomNumber:
+                    document.getElementById("roomNumber").value,
+
+                Price:
+                    document.getElementById("price").value,
+
+                MaxOccupants:
+                    document.getElementById("maxPeople").value,
+
+                Status:
+                    document.getElementById("status").value,
+
+                Description:
+                    document.getElementById("description").value
+            };
+
+            if (editId) {
+
+                await fetch("/api/rooms/" + editId, {
+
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(data)
+                });
+
+            } else {
+
+                await fetch("/api/rooms", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(data)
+                });
+            }
+
+            alert("✅ Thành công");
+
+            resetRoom();
+
+            loadRooms();
+
+        } catch (err) {
+
+            console.error("❌ Lỗi saveRoom:", err);
+        }
     }
 
+    // ================= EDIT =================
+    async function editRoom(id) {
+
+    const r = rooms.find(x => x.RoomID == id);
+
+    if (!r) return;
+
+    console.log("ROOM =", r);
+
+    // set block
+    document.getElementById("blockSelect").value =
+        String(r.BlockID);
+
+    // load tầng theo block
+    await loadFloors();
+
+    // set tầng
+    document.getElementById("floorSelect").value =
+    String(r.FloorID[0] || r.FloorID);
+
+    // field khác
+    document.getElementById("roomNumber").value =
+        r.RoomNumber || "";
+
+    document.getElementById("price").value =
+        r.Price || "";
+
+    document.getElementById("maxPeople").value =
+        r.MaxOccupants || "";
+
+    document.getElementById("status").value =
+        r.Status || "";
+
+    document.getElementById("description").value =
+        r.Description || "";
+
+    editId = id;
+}
+
+    // ================= DELETE =================
     async function deleteRoom(id) {
+
         if (!confirm("Xóa phòng?")) return;
 
-        await fetch("/api/rooms/" + id, { method: "DELETE" });
+        try {
 
-        loadRooms();
+            await fetch("/api/rooms/" + id, {
+
+                method: "DELETE"
+            });
+
+            alert("🗑️ Đã xóa");
+
+            loadRooms();
+
+        } catch (err) {
+
+            console.error("❌ Lỗi deleteRoom:", err);
+        }
     }
 
+    // ================= SEARCH =================
     function searchRoom() {
-        const key = document.getElementById("searchRoom").value.toLowerCase();
+
+        const key =
+            document.getElementById("searchRoom")
+            .value
+            .toLowerCase();
 
         const filtered = rooms.filter(r =>
-            (r.RoomNumber || "").toLowerCase().includes(key)
+
+            (r.RoomNumber || "")
+            .toLowerCase()
+            .includes(key)
         );
 
         renderRooms(filtered);
     }
 
+    // ================= RESET =================
     function resetRoom() {
-        document.querySelectorAll("#main input").forEach(i => i.value = "");
-        document.getElementById("floorSelect").innerHTML = "";
+
+        document.querySelectorAll("#main input")
+            .forEach(i => i.value = "");
+
+        document.getElementById("blockSelect").value = "";
+
+        document.getElementById("floorSelect").innerHTML =
+            "";
+
         editId = null;
     }
 
-    // export ra global
+    // ================= EVENT =================
+    document.addEventListener("change", function (e) {
+
+        if (e.target.id === "blockSelect") {
+
+            loadFloors();
+        }
+    });
+
+    // ================= EXPORT =================
     window.loadRooms = loadRooms;
     window.saveRoom = saveRoom;
     window.editRoom = editRoom;
@@ -152,6 +302,6 @@ if (!window.roomsModule) {
     window.searchRoom = searchRoom;
     window.resetRoom = resetRoom;
 
-    // 🔥 CHẠY NGAY
+    // ================= INIT =================
     loadRooms();
 }

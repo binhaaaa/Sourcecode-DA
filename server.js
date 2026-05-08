@@ -14,6 +14,7 @@ app.use("/api/rooms", require("./routes/roomRoutes"));
 app.use("/api/blocks", require("./routes/blockRoutes"));
 app.use("/api/floors", require("./routes/floorRoutes"));
 app.use("/api/employees", require("./routes/employeeRoutes"));
+app.use("/api/contracts", require("./routes/contractRoutes"));
 
 // ===== SERVER START =====
 app.listen(3000, async () => {

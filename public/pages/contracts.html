@@ -1,18 +1,148 @@
-<h3>Hợp đồng</h3>
+<h3>📄 Quản lý hợp đồng</h3>
 
-<table class="table">
-    <thead>
+<!-- SEARCH -->
+<input
+    id="searchInput"
+    class="form-control mb-3"
+    placeholder="Tìm theo tên khách..."
+    onkeyup="searchContract()"
+/>
+
+<!-- TABLE -->
+<div class="table-wrapper">
+
+<table class="table table-bordered table-hover">
+
+    <thead class="table-dark">
+
         <tr>
+            <th>ID</th>
+
+            <th>Block</th>
+            <th>Tầng</th>
             <th>Phòng</th>
-            <th>Khách</th>
+            <th>Giá</th>
+
+            <th>Khách thuê</th>
+            <th>CCCD</th>
+            <th>SĐT</th>
+            <th>Quê quán</th>
+            <th>Ngày sinh</th>
+            <th>Giới tính</th>
+
             <th>Ngày bắt đầu</th>
+            <th>Ngày kết thúc</th>
+            <th>Tiền cọc</th>
+            <th>Trạng thái</th>
+            <th>Ghi chú</th>
+
+            <th>Hành động</th>
         </tr>
+
     </thead>
-    <tbody>
-        <tr>
-            <td>P101</td>
-            <td>Nguyễn Văn A</td>
-            <td>01/01/2025</td>
-        </tr>
-    </tbody>
+
+    <tbody id="contractTable"></tbody>
+
 </table>
+
+</div>
+
+<hr>
+
+<h4>➕ Thêm / Sửa hợp đồng</h4>
+
+<div class="row">
+
+    <div class="col-md-6">
+        <label>Phòng</label>
+
+        <select id="roomId" class="form-control mb-2">
+
+        </select>
+    </div>
+
+    <div class="col-md-6">
+        <label>Khách đại diện</label>
+
+        <select id="tenantId" class="form-control mb-2">
+
+        </select>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-6">
+        <label>Ngày bắt đầu</label>
+
+        <input
+            type="date"
+            id="startDate"
+            class="form-control mb-2"
+        >
+    </div>
+
+    <div class="col-md-6">
+        <label>Ngày kết thúc</label>
+
+        <input
+            type="date"
+            id="endDate"
+            class="form-control mb-2"
+        >
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-6">
+        <label>Tiền cọc</label>
+
+        <input
+            type="number"
+            id="deposit"
+            class="form-control mb-2"
+        >
+    </div>
+
+    <div class="col-md-6">
+        <label>Trạng thái</label>
+
+        <select id="status" class="form-control mb-2">
+            <option value="Hiệu lực">Hiệu lực</option>
+            <option value="Đã thanh lý">Đã thanh lý</option>
+        </select>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        <label>Ghi chú</label>
+
+        <input
+            id="note"
+            class="form-control mb-2"
+        >
+
+    </div>
+
+</div>
+
+<button
+    class="btn btn-primary"
+    onclick="saveContract()"
+>
+    💾 Lưu
+</button>
+
+<button
+    class="btn btn-secondary"
+    onclick="resetForm()"
+>
+    🔄 Reset
+</button>

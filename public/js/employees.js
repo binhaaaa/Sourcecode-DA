@@ -67,17 +67,31 @@ if (!window.employeesModule) {
 
     // EDIT
     function editEmployee(id) {
-        const e = employees.find(x => x.EmployeeID == id);
 
-        name.value = e.FullName;
-        cccd.value = e.IDCard;
-        phone.value = e.PhoneNumber;
-        role.value = e.RoleID;
-        salary.value = e.BaseSalary;
-        status.value = e.Status;
+    const e = employees.find(x => x.EmployeeID == id);
 
-        editId = id;
-    }
+    if (!e) return;
+
+    document.getElementById("name").value =
+        e.FullName || "";
+
+    document.getElementById("cccd").value =
+        e.IDCard || "";
+
+    document.getElementById("phone").value =
+        e.PhoneNumber || "";
+
+    document.getElementById("role").value =
+        e.RoleID || "";
+
+    document.getElementById("salary").value =
+        e.BaseSalary || "";
+
+    document.getElementById("status").value =
+        e.Status || "";
+
+    editId = id;
+}
 
     // DELETE
     async function deleteEmployee(id) {

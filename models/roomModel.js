@@ -1,13 +1,23 @@
 const { connectDB } = require("../db");
 
 async function getAllRooms() {
+
     const pool = await connectDB();
+
     const result = await pool.request().query(`
-        SELECT r.*, f.FloorName, b.BlockName
+        SELECT 
+            r.*,
+            f.FloorID,
+            f.FloorName,
+            b.BlockID,
+            b.BlockName
         FROM Rooms r
-        JOIN Floors f ON r.FloorID = f.FloorID
-        JOIN Blocks b ON f.BlockID = b.BlockID
+        JOIN Floors f
+            ON r.FloorID = f.FloorID
+        JOIN Blocks b
+            ON f.BlockID = b.BlockID
     `);
+
     return result.recordset;
 }
 

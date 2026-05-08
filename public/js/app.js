@@ -35,6 +35,10 @@ async function loadPage(page) {
                 script.src = "/js/employees.js";
                 break;
 
+            case "contracts":
+                script.src = "/js/contracts.js";
+                break;
+
             default:
                 script = null;
         }
@@ -54,8 +58,12 @@ async function loadPage(page) {
                     loadRooms();
                 }
 
-                if (page === "employees" && typeof loadRooms === "function") {
-                    loadEmployees();S
+                if (page === "employees" && typeof loadEmployees === "function") {
+                    loadEmployees();
+                }
+
+                if (page === "contracts" && typeof loadContracts === "function") {
+                    loadContracts();
                 }
             };
 

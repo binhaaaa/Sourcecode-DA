@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* Sidebar giữ nguyên */
+/* Sidebar */
 .sidebar {
     width: 220px;
     background: #343a40;
@@ -28,19 +28,69 @@ body {
     padding: 20px;
 }
 
-/* 🔥 FIX TABLE */
-table {
-    width: 100%;
-    table-layout: fixed; /* QUAN TRỌNG */
+/* TABLE */
+.table-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: auto;   /* thêm scroll ngang */
+    border: 1px solid #ddd;
 }
 
+/* bảng */
+.table-wrapper {
+    max-height: 400px;
+    overflow: auto;
+    border: 1px solid #ddd;
+}
+
+/* table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* cell */
 th, td {
     text-align: center;
     vertical-align: middle;
-    word-wrap: break-word;
+    padding: 12px;
+    border: 1px solid #ddd;
 }
 
-/* 🎯 Hành động */
+/* header */
+thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #212529;
+    color: white;
+}
+
+/* mô tả */
+.description-cell {
+    width: 220px;
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* action */
+.action-cell {
+    width: 150px;
+    white-space: nowrap;
+}
+
+/* Header sticky */
+thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #212529;
+    color: white;
+}
+
+/* Hành động */
 .action-buttons {
     display: flex;
     justify-content: center;
@@ -51,22 +101,7 @@ th, td {
     padding: 5px 10px;
 }
 
-/* 🎨 Form */
+/* Form */
 input, select {
     margin-bottom: 10px;
-}
-
-.table-wrapper {
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-thead, tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}
-
-tbody {
-    display: block;
 }
