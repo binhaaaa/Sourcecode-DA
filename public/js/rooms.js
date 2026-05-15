@@ -36,29 +36,40 @@ if (!window.roomsModule) {
             html += `
             <tr>
                 <td>${r.RoomID}</td>
-                <td>${r.BlockName || ""}</td>
+
+                <td>
+                    ${r.BlockName || ""} - ${r.BlockDescription || ""}
+                </td>
+
                 <td>${r.FloorName || ""}</td>
-                <td>${r.RoomNumber}</td>
-                <td>${r.Price}</td>
-                <td>${r.MaxOccupants}</td>
-                <td>${r.Status}</td>
+
+                <td>${r.RoomNumber || ""}</td>
+
+                <td>${r.Price || ""}</td>
+
+                <td>${r.MaxOccupants || ""}</td>
+
+                <td>${r.Status || ""}</td>
+
                 <td class="description-cell">
-    ${r.Description || ""}
-</td>
+                    ${r.Description || ""}
+                </td>
 
-<td class="action-cell">
-    <button 
-        class="btn btn-warning btn-sm"
-        onclick="editRoom(${r.RoomID})">
-        Sửa
-    </button>
+                <td class="action-cell">
 
-    <button 
-        class="btn btn-danger btn-sm"
-        onclick="deleteRoom(${r.RoomID})">
-        Xóa
-    </button>
-</td>
+                    <button 
+                        class="btn btn-warning btn-sm"
+                        onclick="editRoom(${r.RoomID})">
+                        Sửa
+                    </button>
+
+                    <button 
+                        class="btn btn-danger btn-sm"
+                        onclick="deleteRoom(${r.RoomID})">
+                        Xóa
+                    </button>
+
+                </td>
             </tr>
             `;
         });
@@ -82,7 +93,7 @@ if (!window.roomsModule) {
 
                 html += `
                     <option value="${b.BlockID}">
-                        ${b.BlockName}
+                        ${b.BlockName} - ${b.Description || ""}
                     </option>
                 `;
             });
@@ -97,35 +108,53 @@ if (!window.roomsModule) {
     }
 
     // ================= LOAD FLOOR =================
-    async function loadFloors() {
+    async function loadFloors(selectedFloorId = null) {
 
-    const blockId =
-        document.getElementById("blockSelect").value;
+        const blockId =
+            document.getElementById("blockSelect").value;
 
-    if (!blockId) return;
+        if (!blockId) {
 
-    const res =
-        await fetch("/api/floors/" + blockId);
+            document.getElementById("floorSelect").innerHTML =
+                `<option value="">-- Chọn Tầng --</option>`;
 
-    const floors = await res.json();
+            return;
+        }
 
-    console.log("floors =", floors);
+        try {
 
-    let html =
-        `<option value="">-- Chọn Tầng --</option>`;
+            const res =
+                await fetch("/api/floors/" + blockId);
 
-    floors.forEach(f => {
+            const floors = await res.json();
 
-        html += `
-            <option value="${String(f.FloorID)}">
-                ${f.FloorName}
-            </option>
-        `;
-    });
+            let html =
+                `<option value="">-- Chọn Tầng --</option>`;
 
-    document.getElementById("floorSelect").innerHTML =
-        html;
-}
+            floors.forEach(f => {
+
+                html += `
+                    <option value="${f.FloorID}">
+                        ${f.FloorName}
+                    </option>
+                `;
+            });
+
+            document.getElementById("floorSelect").innerHTML =
+                html;
+
+            // set lại tầng khi sửa
+            if (selectedFloorId) {
+
+                document.getElementById("floorSelect").value =
+                    String(selectedFloorId);
+            }
+
+        } catch (err) {
+
+            console.error("❌ Lỗi loadFloors:", err);
+        }
+    }
 
     // ================= SAVE =================
     async function saveRoom() {
@@ -134,11 +163,14 @@ if (!window.roomsModule) {
 
             const data = {
 
+                BlockID:
+                    document.getElementById("blockSelect").value,
+
                 FloorID:
                     document.getElementById("floorSelect").value,
 
                 RoomNumber:
-                    document.getElementById("roomNumber").value,
+                    document.getElementById("roomNumber").value.trim(),
 
                 Price:
                     document.getElementById("price").value,
@@ -150,12 +182,71 @@ if (!window.roomsModule) {
                     document.getElementById("status").value,
 
                 Description:
-                    document.getElementById("description").value
+                    document.getElementById("description").value.trim()
             };
+
+            // ================= VALIDATE =================
+
+            if (!data.BlockID) {
+
+                alert("❌ Vui lòng chọn block");
+                return;
+            }
+
+            if (!data.FloorID) {
+
+                alert("❌ Vui lòng chọn tầng");
+                return;
+            }
+
+            if (!data.RoomNumber) {
+
+                alert("❌ Số phòng không được để trống");
+                return;
+            }
+
+            if (!data.Price) {
+
+                alert("❌ Giá phòng không được để trống");
+                return;
+            }
+
+            if (!data.MaxOccupants) {
+
+                alert("❌ Số người tối đa không được để trống");
+                return;
+            }
+
+            // ================= CHECK ROOM NUMBER =================
+
+            const floorText =
+                document.getElementById("floorSelect")
+                .options[
+                    document.getElementById("floorSelect").selectedIndex
+                ].text;
+
+            // Ví dụ "Tầng 2" => 2
+            const floorNumber =
+                floorText.replace(/\D/g, "");
+
+            // P.101, P.201...
+            const regex =
+                new RegExp(`^P\\.${floorNumber}\\d{2}$`);
+
+            if (!regex.test(data.RoomNumber)) {
+
+                alert(
+                    `❌ Phòng của ${floorText} phải có dạng P.${floorNumber}01, P.${floorNumber}02...`
+                );
+
+                return;
+            }
+
+            let res;
 
             if (editId) {
 
-                await fetch("/api/rooms/" + editId, {
+                res = await fetch("/api/rooms/" + editId, {
 
                     method: "PUT",
 
@@ -168,7 +259,7 @@ if (!window.roomsModule) {
 
             } else {
 
-                await fetch("/api/rooms", {
+                res = await fetch("/api/rooms", {
 
                     method: "POST",
 
@@ -180,6 +271,14 @@ if (!window.roomsModule) {
                 });
             }
 
+            const result = await res.json();
+
+            if (!res.ok) {
+
+                alert("❌ " + result.message);
+                return;
+            }
+
             alert("✅ Thành công");
 
             resetRoom();
@@ -189,11 +288,13 @@ if (!window.roomsModule) {
         } catch (err) {
 
             console.error("❌ Lỗi saveRoom:", err);
+
+            alert("❌ Có lỗi xảy ra");
         }
     }
 
-    // ================= EDIT =================
-    async function editRoom(id) {
+// ================= EDIT =================
+async function editRoom(id) {
 
     const r = rooms.find(x => x.RoomID == id);
 
@@ -201,18 +302,24 @@ if (!window.roomsModule) {
 
     console.log("ROOM =", r);
 
-    // set block
+    // ===== FIX FLOOR ID =====
+    const floorId =
+        Array.isArray(r.FloorID)
+            ? r.FloorID[0]
+            : r.FloorID;
+
+    // ===== SET BLOCK =====
     document.getElementById("blockSelect").value =
         String(r.BlockID);
 
-    // load tầng theo block
-    await loadFloors();
+    // ===== LOAD FLOOR =====
+    await loadFloors(floorId);
 
-    // set tầng
+    // ===== SET FLOOR =====
     document.getElementById("floorSelect").value =
-    String(r.FloorID[0] || r.FloorID);
+        String(floorId);
 
-    // field khác
+    // ===== OTHER FIELD =====
     document.getElementById("roomNumber").value =
         r.RoomNumber || "";
 
@@ -223,14 +330,13 @@ if (!window.roomsModule) {
         r.MaxOccupants || "";
 
     document.getElementById("status").value =
-        r.Status || "";
+        r.Status || "Trống";
 
     document.getElementById("description").value =
         r.Description || "";
 
     editId = id;
 }
-
     // ================= DELETE =================
     async function deleteRoom(id) {
 
@@ -280,7 +386,10 @@ if (!window.roomsModule) {
         document.getElementById("blockSelect").value = "";
 
         document.getElementById("floorSelect").innerHTML =
-            "";
+            `<option value="">-- Chọn Tầng --</option>`;
+
+        document.getElementById("status").value =
+            "Trống";
 
         editId = null;
     }
