@@ -1,3 +1,4 @@
+// 🔒 chống load trùng
 if (!window.contractsModule) {
 
     window.contractsModule = true;
@@ -8,15 +9,24 @@ if (!window.contractsModule) {
     // ================= LOAD =================
     async function loadContracts() {
 
-        const res = await fetch("/api/contracts");
+        try {
 
-        contracts = await res.json();
+            const res = await fetch("/api/contracts");
 
-        renderTable();
+            contracts = await res.json();
 
-        loadRooms();
+            renderTable();
 
-        loadTenants();
+            await loadRooms();
+
+            await loadTenants();
+
+        } catch (err) {
+
+            console.error("❌ Lỗi loadContracts:", err);
+
+            alert("❌ Không tải được hợp đồng");
+        }
     }
 
     // ================= RENDER =================
@@ -31,28 +41,50 @@ if (!window.contractsModule) {
 
                 <td>${c.ContractID}</td>
 
-                <td>${c.BlockName}</td>
-                <td>${c.FloorName}</td>
-                <td>${c.RoomNumber}</td>
-                <td>${c.Price}</td>
+                <td>${c.BlockName || ""}</td>
 
-                <td>${c.FullName}</td>
-                <td>${c.IDCard}</td>
+                <td>${c.FloorName || ""}</td>
+
+                <td>${c.RoomNumber || ""}</td>
+
+                <td>${c.Price || ""}</td>
+
+                <td>${c.FullName || ""}</td>
+
+                <td>${c.IDCard || ""}</td>
+
                 <td>${c.PhoneNumber || ""}</td>
+
                 <td>${c.Hometown || ""}</td>
-                <td>${c.BirthDate ? c.BirthDate.split("T")[0] : ""}</td>
+
+                <td>
+                    ${c.BirthDate
+                        ? c.BirthDate.split("T")[0]
+                        : ""}
+                </td>
+
                 <td>${c.Gender || ""}</td>
 
-                <td>${c.StartDate ? c.StartDate.split("T")[0] : ""}</td>
-                <td>${c.EndDate ? c.EndDate.split("T")[0] : ""}</td>
+                <td>
+                    ${c.StartDate
+                        ? c.StartDate.split("T")[0]
+                        : ""}
+                </td>
 
-                <td>${c.Deposit}</td>
+                <td>
+                    ${c.EndDate
+                        ? c.EndDate.split("T")[0]
+                        : ""}
+                </td>
 
-                <td>${c.ContractStatus}</td>
+                <td>${c.Deposit || 0}</td>
+
+                <td>${c.ContractStatus || ""}</td>
 
                 <td>${c.Note || ""}</td>
 
-                <td>
+                <td class="action-cell">
+
                     <button
                         class="btn btn-warning btn-sm"
                         onclick="editContract(${c.ContractID})"
@@ -66,119 +98,239 @@ if (!window.contractsModule) {
                     >
                         Xóa
                     </button>
+
                 </td>
 
             </tr>
             `;
         });
 
-        document.getElementById("contractTable").innerHTML = html;
+        document.getElementById("contractTable").innerHTML =
+            html;
     }
 
     // ================= LOAD ROOMS =================
     async function loadRooms() {
 
-        const res = await fetch("/api/rooms");
+        try {
 
-        const rooms = await res.json();
+            const res = await fetch("/api/rooms");
 
-        let html = "";
+            const rooms = await res.json();
 
-        rooms.forEach(r => {
+            let html =
+                `<option value="">-- Chọn phòng --</option>`;
 
-            html += `
-                <option value="${r.RoomID}">
-                    ${r.RoomNumber}
-                </option>
-            `;
-        });
+            rooms.forEach(r => {
 
-        document.getElementById("roomId").innerHTML = html;
+                html += `
+                    <option value="${r.RoomID}">
+                        ${r.BlockName} -
+                        ${r.FloorName} -
+                        ${r.RoomNumber}
+                    </option>
+                `;
+            });
+
+            document.getElementById("roomId").innerHTML =
+                html;
+
+        } catch (err) {
+
+            console.error("❌ Lỗi loadRooms:", err);
+        }
     }
 
     // ================= LOAD TENANTS =================
     async function loadTenants() {
 
-        const res = await fetch("/api/tenants");
+        try {
 
-        const tenants = await res.json();
+            const res = await fetch("/api/tenants");
 
-        let html = "";
+            const tenants = await res.json();
 
-        tenants
-        .filter(t => t.IsRepresentative == 1)
-        .forEach(t => {
+            let html =
+                `<option value="">-- Chọn khách thuê --</option>`;
 
-            html += `
-                <option value="${t.TenantID}">
-                    ${t.FullName}
-                </option>
-            `;
-        });
+            tenants
+                .filter(t => t.IsRepresentative == 1)
+                .forEach(t => {
 
-        document.getElementById("tenantId").innerHTML = html;
+                    html += `
+                        <option value="${t.TenantID}">
+                            ${t.FullName}
+                        </option>
+                    `;
+                });
+
+            document.getElementById("tenantId").innerHTML =
+                html;
+
+        } catch (err) {
+
+            console.error("❌ Lỗi loadTenants:", err);
+        }
     }
 
     // ================= SAVE =================
     async function saveContract() {
 
-        const data = {
-            RoomID: roomId.value,
-            TenantID: tenantId.value,
-            StartDate: startDate.value,
-            EndDate: endDate.value,
-            Deposit: deposit.value,
-            ContractStatus: status.value,
-            Note: note.value
-        };
+        try {
 
-        if (editId) {
+            const data = {
 
-            await fetch("/api/contracts/" + editId, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
+                RoomID:
+                    document.getElementById("roomId").value,
 
-        } else {
+                TenantID:
+                    document.getElementById("tenantId").value,
 
-            await fetch("/api/contracts", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
+                StartDate:
+                    document.getElementById("startDate").value,
+
+                EndDate:
+                    document.getElementById("endDate").value,
+
+                Deposit:
+                    document.getElementById("deposit").value,
+
+                ContractStatus:
+                    document.getElementById("status").value,
+
+                Note:
+                    document.getElementById("note").value.trim()
+            };
+
+            // ================= VALIDATE =================
+
+            if (!data.RoomID) {
+
+                alert("❌ Vui lòng chọn phòng");
+
+                return;
+            }
+
+            if (!data.TenantID) {
+
+                alert("❌ Vui lòng chọn khách thuê");
+
+                return;
+            }
+
+            if (!data.StartDate) {
+
+                alert("❌ Vui lòng chọn ngày bắt đầu");
+
+                return;
+            }
+
+            if (!data.EndDate) {
+
+                alert("❌ Vui lòng chọn ngày kết thúc");
+
+                return;
+            }
+
+            if (data.EndDate < data.StartDate) {
+
+                alert(
+                    "❌ Ngày kết thúc phải lớn hơn ngày bắt đầu"
+                );
+
+                return;
+            }
+
+            let res;
+
+            // ================= UPDATE =================
+            if (editId) {
+
+                res = await fetch(
+                    "/api/contracts/" + editId,
+                    {
+                        method: "PUT",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(data)
+                    }
+                );
+
+            } else {
+
+                // ================= CREATE =================
+                res = await fetch(
+                    "/api/contracts",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(data)
+                    }
+                );
+            }
+
+            const result = await res.json();
+
+            if (!res.ok) {
+
+                alert("❌ " + result.message);
+
+                return;
+            }
+
+            alert("✅ Thành công");
+
+            resetForm();
+
+            loadContracts();
+
+        } catch (err) {
+
+            console.error("❌ Lỗi saveContract:", err);
+
+            alert("❌ Có lỗi xảy ra");
         }
-
-        resetForm();
-
-        loadContracts();
     }
 
     // ================= EDIT =================
     function editContract(id) {
 
-        const c = contracts.find(x => x.ContractID == id);
+        const c =
+            contracts.find(x => x.ContractID == id);
 
-        roomId.value = c.RoomID;
-        tenantId.value = c.TenantID;
+        if (!c) return;
 
-        startDate.value = c.StartDate
-            ? c.StartDate.split("T")[0]
-            : "";
+        document.getElementById("roomId").value =
+            c.RoomID;
 
-        endDate.value = c.EndDate
-            ? c.EndDate.split("T")[0]
-            : "";
+        document.getElementById("tenantId").value =
+            c.TenantID;
 
-        deposit.value = c.Deposit;
+        document.getElementById("startDate").value =
+            c.StartDate
+                ? c.StartDate.split("T")[0]
+                : "";
 
-        status.value = c.ContractStatus;
+        document.getElementById("endDate").value =
+            c.EndDate
+                ? c.EndDate.split("T")[0]
+                : "";
 
-        note.value = c.Note;
+        document.getElementById("deposit").value =
+            c.Deposit || "";
+
+        document.getElementById("status").value =
+            c.ContractStatus || "Hiệu lực";
+
+        document.getElementById("note").value =
+            c.Note || "";
 
         editId = id;
     }
@@ -186,13 +338,39 @@ if (!window.contractsModule) {
     // ================= DELETE =================
     async function deleteContract(id) {
 
-        if (!confirm("Xóa hợp đồng?")) return;
+        if (!confirm("Xóa hợp đồng?")) {
 
-        await fetch("/api/contracts/" + id, {
-            method: "DELETE"
-        });
+            return;
+        }
 
-        loadContracts();
+        try {
+
+            const res = await fetch(
+                "/api/contracts/" + id,
+                {
+                    method: "DELETE"
+                }
+            );
+
+            const result = await res.json();
+
+            if (!res.ok) {
+
+                alert("❌ " + result.message);
+
+                return;
+            }
+
+            alert("🗑️ Đã xóa");
+
+            loadContracts();
+
+        } catch (err) {
+
+            console.error("❌ Lỗi deleteContract:", err);
+
+            alert("❌ Có lỗi xảy ra");
+        }
     }
 
     // ================= SEARCH =================
@@ -204,6 +382,7 @@ if (!window.contractsModule) {
             .toLowerCase();
 
         const filtered = contracts.filter(c =>
+
             (c.FullName || "")
             .toLowerCase()
             .includes(key)
@@ -218,6 +397,15 @@ if (!window.contractsModule) {
         document
             .querySelectorAll("#main input")
             .forEach(i => i.value = "");
+
+        document.getElementById("roomId").value = "";
+
+        document.getElementById("tenantId").value = "";
+
+        document.getElementById("status").value =
+            "Hiệu lực";
+
+        document.getElementById("note").value = "";
 
         editId = null;
     }

@@ -98,10 +98,8 @@ exports.createRoom = async (req, res) => {
 
         const floorData = rooms.find(r =>
 
-            String(r.BlockID) === String(BlockID) &&
-            String(r.FloorID) === String(FloorID)
-        );
-
+    String(r.FloorID) === String(FloorID)
+);
         if (floorData) {
 
             // VD: P.301 => 3
@@ -121,22 +119,22 @@ exports.createRoom = async (req, res) => {
             }
         }
 
-        // ================= CHECK DUPLICATE =================
 
-        const isDuplicate = rooms.find(r =>
+        // ================= CHECK DUPLICATE ROOM =================
 
-            String(r.BlockID) === String(BlockID) &&
-            String(r.FloorID) === String(FloorID) &&
-            String(r.RoomNumber).trim() === String(RoomNumber).trim()
-        );
+const isDuplicate = rooms.find(r =>
+    String(r.FloorID) === String(FloorID) &&
+    String(r.RoomNumber).trim().toUpperCase() ===
+    String(RoomNumber).trim().toUpperCase()
+);
 
-        if (isDuplicate) {
+if (isDuplicate) {
 
-            return res.status(400).json({
-                message:
-                    "Số phòng đã tồn tại trong block và tầng này"
-            });
-        }
+    return res.status(400).json({
+        message:
+            `Phòng ${RoomNumber} đã tồn tại ở tầng này`
+    });
+}
 
         // ================= CREATE =================
 
@@ -148,12 +146,23 @@ exports.createRoom = async (req, res) => {
 
     } catch (err) {
 
-        console.error("❌ Lỗi createRoom:", err);
+    console.error("❌ Lỗi createRoom:", err);
 
-        res.status(500).json({
-            message: "Lỗi server"
+    // duplicate room
+    if (
+        err.message &&
+        err.message.includes("UQ_Room_Floor_RoomNumber")
+    ) {
+
+        return res.status(400).json({
+            message: "Phòng đã tồn tại ở tầng này"
         });
     }
+
+    res.status(500).json({
+        message: "Lỗi server"
+    });
+}
 };
 
 // ================= UPDATE =================
@@ -234,10 +243,8 @@ exports.updateRoom = async (req, res) => {
 
         const floorData = rooms.find(r =>
 
-            String(r.BlockID) === String(BlockID) &&
-            String(r.FloorID) === String(FloorID)
-        );
-
+    String(r.FloorID) === String(FloorID)
+);
         if (floorData) {
 
             const roomFloor =
@@ -255,23 +262,26 @@ exports.updateRoom = async (req, res) => {
             }
         }
 
-        // ================= CHECK DUPLICATE =================
+        // ================= CHECK DUPLICATE ROOM =================
 
-        const isDuplicate = rooms.find(r =>
+const isDuplicate = rooms.find(r =>
 
-            r.RoomID != req.params.id &&
-            String(r.BlockID) === String(BlockID) &&
-            String(r.FloorID) === String(FloorID) &&
-            String(r.RoomNumber).trim() === String(RoomNumber).trim()
-        );
+    r.RoomID != req.params.id &&
 
-        if (isDuplicate) {
 
-            return res.status(400).json({
-                message:
-                    "Số phòng đã tồn tại trong block và tầng này"
-            });
-        }
+    String(r.FloorID) === String(FloorID) &&
+
+    String(r.RoomNumber).trim().toUpperCase() ===
+    String(RoomNumber).trim().toUpperCase()
+);
+
+if (isDuplicate) {
+
+    return res.status(400).json({
+        message:
+            `Phòng ${RoomNumber} đã tồn tại ở tầng này`
+    });
+}
 
         // ================= UPDATE =================
 
@@ -286,12 +296,22 @@ exports.updateRoom = async (req, res) => {
 
     } catch (err) {
 
-        console.error("❌ Lỗi updateRoom:", err);
+    console.error("❌ Lỗi updateRoom:", err);
 
-        res.status(500).json({
-            message: "Lỗi server"
+    if (
+        err.message &&
+        err.message.includes("UQ_Room_Floor_RoomNumber")
+    ) {
+
+        return res.status(400).json({
+            message: "Phòng đã tồn tại ở tầng này"
         });
     }
+
+    res.status(500).json({
+        message: "Lỗi server"
+    });
+}
 };
 
 // ================= DELETE =================

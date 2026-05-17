@@ -246,40 +246,40 @@ if (!window.roomsModule) {
 
             if (editId) {
 
-                res = await fetch("/api/rooms/" + editId, {
+    res = await fetch("/api/rooms/" + editId, {
 
-                    method: "PUT",
+        method: "PUT",
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+        headers: {
+            "Content-Type": "application/json"
+        },
 
-                    body: JSON.stringify(data)
-                });
+        body: JSON.stringify(data)
+    });
 
-            } else {
+} else {
 
-                res = await fetch("/api/rooms", {
+    res = await fetch("/api/rooms", {
 
-                    method: "POST",
+        method: "POST",
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+        headers: {
+            "Content-Type": "application/json"
+        },
 
-                    body: JSON.stringify(data)
-                });
-            }
+        body: JSON.stringify(data)
+    });
+}
 
-            const result = await res.json();
+const result = await res.json();
 
-            if (!res.ok) {
+if (!res.ok) {
 
-                alert("❌ " + result.message);
-                return;
-            }
+    alert("❌ " + result.message);
+    return;
+}
 
-            alert("✅ Thành công");
+alert("✅ Thành công");
 
             resetRoom();
 
