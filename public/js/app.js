@@ -1,69 +1,177 @@
 // ================= LOAD PAGE =================
-async function loadPage(page) {
+
+async function loadPage(page, element = null) {
+
     try {
-        // 🎯 Đổi tiêu đề
-        document.getElementById("title").innerText = page.toUpperCase();
 
-        // 🎯 Load HTML
-        const res = await fetch(`/pages/${page}.html`);
-        const html = await res.text();
+        // ================= ACTIVE MENU =================
 
-        document.getElementById("main").innerHTML = html;
+        document.querySelectorAll(".sidebar a")
+            .forEach(a =>
+                a.classList.remove("active")
+            );
+
+        if (element) {
+
+            element.classList.add("active");
+        }
+
+        // ================= TITLE =================
+
+        document.getElementById("title").innerText =
+            page.toUpperCase();
+
+        // ================= LOAD HTML =================
+
+        const res =
+            await fetch(`/pages/${page}.html`);
+
+        const html =
+            await res.text();
+
+        document.getElementById("main").innerHTML =
+            html;
 
         // ================= REMOVE SCRIPT CŨ =================
-        const oldScript = document.getElementById("page-script");
-        if (oldScript) oldScript.remove();
 
-        // ================= LOAD JS THEO PAGE =================
-        let script = document.createElement("script");
+        const oldScript =
+            document.getElementById("page-script");
+
+        if (oldScript) {
+
+            oldScript.remove();
+        }
+
+        // ================= LOAD JS =================
+
+        let script =
+            document.createElement("script");
+
         script.id = "page-script";
 
         switch (page) {
-            case "tenants":
-                script.src = "/js/tenants.js";
+
+            case "dashboard":
+
+                script.src =
+                    "/js/dashboard.js";
+
                 break;
 
             case "rooms":
-                script.src = "/js/rooms.js";
+
+                script.src =
+                    "/js/rooms.js";
+
                 break;
 
-            case "invoices":
-                script.src = "/js/invoices.js";
-                break;
+            case "tenants":
 
-            case "employees":
-                script.src = "/js/employees.js";
+                script.src =
+                    "/js/tenants.js";
+
                 break;
 
             case "contracts":
-                script.src = "/js/contracts.js";
+
+                script.src =
+                    "/js/contracts.js";
+
+                break;
+
+            case "roomRentals":
+
+                script.src =
+                    "/js/roomRentals.js";
+
+                break;
+
+            case "employees":
+
+                script.src =
+                    "/js/employees.js";
+
+                break;
+
+            case "invoices":
+
+                script.src =
+                    "/js/invoices.js";
+
                 break;
 
             default:
+
                 script = null;
         }
 
-        // ================= GẮN SCRIPT + RUN =================
+        // ================= APPEND SCRIPT =================
+
         if (script) {
 
             script.onload = () => {
-                console.log("✅ Script loaded:", page);
 
-                // 🔥 GỌI FUNCTION SAU KHI LOAD
-                if (page === "tenants" && typeof loadTenants === "function") {
-                    loadTenants();
+                console.log(
+                    "✅ Script loaded:",
+                    page
+                );
+
+                // ================= LOAD FUNCTIONS =================
+
+                if (
+                    page === "dashboard" &&
+                    typeof loadDashboard === "function"
+                ) {
+
+                    loadDashboard();
                 }
 
-                if (page === "rooms" && typeof loadRooms === "function") {
+                if (
+                    page === "rooms" &&
+                    typeof loadRooms === "function"
+                ) {
+
                     loadRooms();
                 }
 
-                if (page === "employees" && typeof loadEmployees === "function") {
+                if (
+                    page === "tenants" &&
+                    typeof loadTenants === "function"
+                ) {
+
+                    loadTenants();
+                }
+
+                if (
+                    page === "contracts" &&
+                    typeof loadContracts === "function"
+                ) {
+
+                    loadContracts();
+                }
+
+                if (
+                    page === "roomRentals" &&
+                    typeof loadRentals === "function"
+                ) {
+
+                    loadRentals();
+                }
+
+                if (
+                    page === "employees" &&
+                    typeof loadEmployees === "function"
+                ) {
+
                     loadEmployees();
                 }
 
-                if (page === "contracts" && typeof loadContracts === "function") {
-                    loadContracts();
+                if (
+                    page === "invoices" &&
+                    typeof loadInvoices === "function"
+                ) {
+
+                    loadInvoices();
                 }
             };
 
@@ -71,11 +179,23 @@ async function loadPage(page) {
         }
 
     } catch (err) {
-        console.error("❌ Load page lỗi:", err);
+
+        console.error(
+            "❌ Load page lỗi:",
+            err
+        );
     }
 }
 
 // ================= AUTO LOAD =================
+
 window.onload = () => {
-    loadPage("dashboard");
+
+    const firstMenu =
+        document.querySelector(".sidebar a");
+
+    loadPage(
+        "dashboard",
+        firstMenu
+    );
 };

@@ -1,5 +1,64 @@
-<div class="row">
-    <div class="col-md-4">
-        <div class="card p-3 bg-primary text-white">Phòng: 25</div>
+<!-- TITLE -->
+    <h3>
+        📊 Dashboard thống kê
+    </h3>
+
+   <!-- ================= DASHBOARD ================= -->
+<div class="dashboard-cards">
+
+    <!-- Tổng phòng -->
+    <div class="dashboard-card bg-blue">
+        <h5>Tổng phòng</h5>
+        <h4 id="totalRooms">0</h4>
+    </div>
+
+    <!-- Phòng trống -->
+    <div class="dashboard-card bg-green">
+        <h5>Phòng trống</h5>
+        <h4 id="emptyRooms">0</h4>
+    </div>
+
+    <!-- Đang thuê -->
+    <div class="dashboard-card bg-red">
+        <h5>Đang thuê</h5>
+        <h4 id="rentedRooms">0</h4>
+    </div>
+
+    <!-- Bảo trì -->
+    <div class="dashboard-card bg-yellow">
+        <h5>Bảo trì</h5>
+        <h4 id="maintenanceRooms">0</h4>
+    </div>
+
+    <!-- Đã cọc -->
+    <div class="dashboard-card bg-cyan">
+        <h5>Đã cọc</h5>
+        <h4 id="depositRooms">0</h4>
+    </div>
+
+    <!-- Khách thuê -->
+    <div class="dashboard-card bg-purple">
+        <h5>Khách thuê</h5>
+        <h4 id="totalTenants">0</h4>
+    </div>
+
+    <!-- Nhân viên -->
+    <div class="dashboard-card bg-darkblue">
+        <h5>Nhân viên</h5>
+        <h4 id="totalEmployees">0</h4>
+    </div>
+
+</div>
+
+    <!-- ================= CHART ================= -->
+    
+
+    <div class="card shadow p-4">
+    <h4 class="mb-4">
+        📈 Biểu đồ trạng thái phòng
+    </h4>
+
+    <div class="chart-container">
+        <canvas id="roomChart"></canvas>
     </div>
 </div>

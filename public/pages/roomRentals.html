@@ -1,0 +1,246 @@
+<h3 class="mb-4">
+    🏠 Quản lý thuê phòng
+</h3>
+
+<!-- ================= SEARCH ================= -->
+
+<div class="mb-3">
+
+    <input
+        type="text"
+        id="searchRental"
+        class="form-control"
+        placeholder="Tìm theo tên phòng..."
+    >
+
+</div>
+
+<!-- ================= TABLE ================= -->
+
+<div class="table-wrapper">
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+
+            <tr>
+
+                <th>ID</th>
+
+                <th>Dãy</th>
+
+                <th>Tầng</th>
+
+                <th>Phòng</th>
+
+                <th>Khách thuê</th>
+
+                <th>CCCD</th>
+
+                <th>SDT</th>
+
+                <th>Ngày vào</th>
+
+                <th>Ngày ra</th>
+
+                <th>Đại diện</th>
+
+                <th>Trạng thái</th>
+
+                <th>Ghi chú</th>
+
+                <th>Hành động</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="rentalTableBody">
+
+            <tr>
+
+                <td colspan="12" class="text-center">
+                    Đang tải dữ liệu...
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- ================= FORM ================= -->
+<hr>
+<h4>
+    ➕ Thêm / Sửa thuê phòng
+</h4>
+
+<div class="card p-3 shadow-sm">
+
+    <div class="row">
+
+        <!-- LEFT -->
+
+        <div class="col-md-6">
+
+            <input
+                type="hidden"
+                id="rentalId"
+            >
+
+            <!-- BLOCK -->
+            <select
+                id="blockId"
+                class="form-control mb-3"
+            >
+
+                <option value="">
+                    -- Chọn dãy --
+                </option>
+
+            </select>
+
+            <!-- FLOOR -->
+
+            <select
+                id="floorId"
+                class="form-control mb-3"
+            >
+
+                <option value="">
+                    -- Chọn tầng --
+                </option>
+
+            </select>
+
+            <!-- ROOM -->
+
+            <select
+                id="roomId"
+                class="form-control mb-3"
+            >
+
+                <option value="">
+                    -- Chọn phòng --
+                </option>
+
+            </select>
+
+            <!-- TENANT -->
+
+            <select
+                id="tenantId"
+                class="form-control mb-3"
+            >
+
+                <option value="">
+                    -- Chọn khách thuê --
+                </option>
+
+            </select>
+
+            <!-- CONTRACT -->
+
+            <select
+                id="contractId"
+                class="form-control mb-3"
+            >
+
+                <option value="">
+                    -- Chọn hợp đồng --
+                </option>
+
+            </select>
+
+        </div>
+
+        <!-- RIGHT -->
+
+        <div class="col-md-6">
+
+            <!-- CHECK IN -->
+            <input
+                type="date"
+                id="checkInDate"
+                class="form-control mb-3"
+            >
+
+            <!-- CHECK OUT -->
+
+            <input
+                type="date"
+                id="checkOutDate"
+                class="form-control mb-3"
+            >
+
+            <!-- REPRESENT -->
+
+            <select
+                id="isRepresentative"
+                class="form-control mb-3"
+            >   
+                
+
+                <option value="1">
+                    Đại diện
+                </option>
+
+                <option value="0">
+                    Thành viên
+                </option>
+
+            </select>
+
+            <!-- STATUS -->
+
+            <select
+                id="rentalStatus"
+                class="form-control mb-3"
+            >
+
+                <option value="Đang ở">
+                    Đang ở
+                </option>
+
+                <option value="Đã chuyển đi">
+                    Đã chuyển đi
+                </option>
+
+            </select>
+
+            <!-- NOTE -->
+
+            <input
+                type="text"
+                id="note"
+                class="form-control mb-3"
+                placeholder="Nhập ghi chú..." 
+            >
+
+        </div>
+
+    </div>
+
+    <!-- BUTTON -->
+
+    <div class="mt-3">
+
+        <button
+            class="btn btn-primary"
+            onclick="saveRental()"
+        >
+            💾 Lưu
+        </button>
+
+        <button
+            class="btn btn-secondary"
+            onclick="resetRentalForm()"
+        >
+            🔄 Reset
+        </button>
+
+    </div>
+
+</div>

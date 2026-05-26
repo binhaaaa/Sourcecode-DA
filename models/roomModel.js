@@ -7,15 +7,25 @@ async function getAllRooms() {
 
     const result = await pool.request().query(`
         SELECT 
-            r.*,
-            f.FloorID,
+            r.RoomID,
+            r.FloorID,
+            r.RoomNumber,
+            r.Price,
+            r.MaxOccupants,
+            r.Status,
+            r.Description,
+
             f.FloorName,
             f.BlockID,
+
             b.BlockName,
             b.Description AS BlockDescription
+
         FROM Rooms r
+
         LEFT JOIN Floors f 
             ON r.FloorID = f.FloorID
+
         LEFT JOIN Blocks b 
             ON f.BlockID = b.BlockID
     `);

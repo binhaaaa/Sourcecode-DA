@@ -1,0 +1,209 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+
+    font-family: Arial, sans-serif;
+
+    height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background: lightblue;
+}
+
+/* CONTAINER */
+
+.login-container {
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+/* BOX */
+
+.login-box {
+
+    width: 500px;
+
+    min-height: 450px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    display: flex;
+
+    box-shadow:
+        0 15px 40px
+        rgba(0,0,0,0.2);
+}
+
+/* img */
+.login-right img {
+
+    display: block;
+
+    width: 90px;
+
+    height: 90px;
+
+    margin: 0 auto 20px;
+
+    object-fit: contain;
+}
+
+/* RIGHT */
+
+.login-right {
+
+    width: 100%;
+
+    padding: 60px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+.login-right h2 {
+    font-size: 28px;
+
+    margin-bottom: 20px;
+
+    color: #2a5298;
+
+    text-align: center;
+}
+
+/* INPUT */
+
+.input-group-custom {
+
+    position: relative;
+
+    margin-bottom: 20px;
+}
+
+.input-group-custom i {
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 15px;
+
+    transform: translateY(-50%);
+
+    color: #777;
+}
+
+.input-group-custom input {
+
+    width: 100%;
+
+    padding: 14px 14px 14px 45px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+
+    transition: 0.3s;
+}
+
+.input-group-custom input:focus {
+
+    outline: none;
+
+    border-color: #2a5298;
+
+    box-shadow:
+        0 0 10px
+        rgba(42,82,152,0.2);
+}
+
+/* BUTTON */
+
+.login-btn {
+
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #2a5298;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+
+    background: #1e3c72;
+
+    transform: translateY(-2px);
+}
+
+/* MESSAGE */
+
+#msg {
+
+    margin-top: 15px;
+
+    text-align: center;
+
+    color: red;
+
+    font-weight: bold;
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 768px) {
+
+    .login-box {
+
+        width: 95%;
+
+        flex-direction: column;
+    }
+
+    .login-left,
+    .login-right {
+
+        width: 100%;
+    }
+
+    .login-left {
+
+        padding: 30px;
+    }
+}

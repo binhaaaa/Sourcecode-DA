@@ -45,7 +45,8 @@ async function getAllContracts() {
 
         WHERE t.IsRepresentative = 1
 
-        ORDER BY c.ContractID DESC
+        ORDER BY c.ContractID ASC
+      
     `);
 
     return result.recordset;

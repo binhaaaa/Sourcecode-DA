@@ -1,3 +1,4 @@
+
 // 🔒 chống load trùng
 if (!window.contractsModule) {
 
@@ -11,9 +12,15 @@ if (!window.contractsModule) {
 
         try {
 
-            const res = await fetch("/api/contracts");
+            console.log("🔥 loadContracts chạy");
 
-            contracts = await res.json();
+            const res =
+                await fetch("/api/contracts");
+
+            contracts =
+                await res.json();
+
+            console.log("CONTRACTS:", contracts);
 
             renderTable();
 
@@ -23,7 +30,10 @@ if (!window.contractsModule) {
 
         } catch (err) {
 
-            console.error("❌ Lỗi loadContracts:", err);
+            console.error(
+                "❌ Lỗi loadContracts:",
+                err
+            );
 
             alert("❌ Không tải được hợp đồng");
         }
@@ -32,81 +42,109 @@ if (!window.contractsModule) {
     // ================= RENDER =================
     function renderTable(data = contracts) {
 
+        const table =
+            document.getElementById(
+                "contractTable"
+            );
+
+        if (!table) {
+
+            console.log(
+                "❌ Không tìm thấy contractTable"
+            );
+
+            return;
+        }
+
         let html = "";
 
-        data.forEach(c => {
+        if (!data || data.length === 0) {
 
-            html += `
-            <tr>
-
-                <td>${c.ContractID}</td>
-
-                <td>${c.BlockName || ""}</td>
-
-                <td>${c.FloorName || ""}</td>
-
-                <td>${c.RoomNumber || ""}</td>
-
-                <td>${c.Price || ""}</td>
-
-                <td>${c.FullName || ""}</td>
-
-                <td>${c.IDCard || ""}</td>
-
-                <td>${c.PhoneNumber || ""}</td>
-
-                <td>${c.Hometown || ""}</td>
-
-                <td>
-                    ${c.BirthDate
-                        ? c.BirthDate.split("T")[0]
-                        : ""}
-                </td>
-
-                <td>${c.Gender || ""}</td>
-
-                <td>
-                    ${c.StartDate
-                        ? c.StartDate.split("T")[0]
-                        : ""}
-                </td>
-
-                <td>
-                    ${c.EndDate
-                        ? c.EndDate.split("T")[0]
-                        : ""}
-                </td>
-
-                <td>${c.Deposit || 0}</td>
-
-                <td>${c.ContractStatus || ""}</td>
-
-                <td>${c.Note || ""}</td>
-
-                <td class="action-cell">
-
-                    <button
-                        class="btn btn-warning btn-sm"
-                        onclick="editContract(${c.ContractID})"
-                    >
-                        Sửa
-                    </button>
-
-                    <button
-                        class="btn btn-danger btn-sm"
-                        onclick="deleteContract(${c.ContractID})"
-                    >
-                        Xóa
-                    </button>
-
-                </td>
-
-            </tr>
+            html = `
+                <tr>
+                    <td colspan="17" class="text-center">
+                        Không có dữ liệu hợp đồng
+                    </td>
+                </tr>
             `;
-        });
 
-        document.getElementById("contractTable").innerHTML =
-            html;
+        } else {
+
+            data.forEach(c => {
+
+                html += `
+                <tr>
+
+                    <td>${c.ContractID || ""}</td>
+
+                    <td>${c.BlockName || ""}</td>
+
+                    <td>${c.FloorName || ""}</td>
+
+                    <td>${c.RoomNumber || ""}</td>
+
+                    <td>${c.Price || ""}</td>
+
+                    <td>${c.FullName || ""}</td>
+
+                    <td>${c.IDCard || ""}</td>
+
+                    <td>${c.PhoneNumber || ""}</td>
+
+                    <td>${c.Hometown || ""}</td>
+
+                    <td>
+                        ${c.BirthDate
+                            ? c.BirthDate.split("T")[0]
+                            : ""}
+                    </td>
+
+                    <td>${c.Gender || ""}</td>
+
+                    <td>
+                        ${c.StartDate
+                            ? c.StartDate.split("T")[0]
+                            : ""}
+                    </td>
+
+                    <td>
+                        ${c.EndDate
+                            ? c.EndDate.split("T")[0]
+                            : ""}
+                    </td>
+
+                    <td>${c.Deposit || 0}</td>
+
+                    <td>${c.ContractStatus || ""}</td>
+
+                    <td>${c.Note || ""}</td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-warning btn-sm"
+                            onclick="editContract(${c.ContractID})">
+
+                            Sửa
+
+                        </button>
+
+                        <button
+                            class="btn btn-danger btn-sm"
+                            onclick="deleteContract(${c.ContractID})">
+
+                            Xóa
+
+                        </button>
+
+                    </td>
+
+                </tr>
+                `;
+            });
+        }
+
+        table.innerHTML = html;
     }
 
     // ================= LOAD ROOMS =================
@@ -114,9 +152,11 @@ if (!window.contractsModule) {
 
         try {
 
-            const res = await fetch("/api/rooms");
+            const res =
+                await fetch("/api/rooms");
 
-            const rooms = await res.json();
+            const rooms =
+                await res.json();
 
             let html =
                 `<option value="">-- Chọn phòng --</option>`;
@@ -125,19 +165,27 @@ if (!window.contractsModule) {
 
                 html += `
                     <option value="${r.RoomID}">
-                        ${r.BlockName} -
-                        ${r.FloorName} -
-                        ${r.RoomNumber}
+                        ${r.BlockName || ""} -
+                        ${r.FloorName || ""} -
+                        ${r.RoomNumber || ""}
                     </option>
                 `;
             });
 
-            document.getElementById("roomId").innerHTML =
-                html;
+            const roomSelect =
+                document.getElementById("roomId");
+
+            if (roomSelect) {
+
+                roomSelect.innerHTML = html;
+            }
 
         } catch (err) {
 
-            console.error("❌ Lỗi loadRooms:", err);
+            console.error(
+                "❌ Lỗi loadRooms:",
+                err
+            );
         }
     }
 
@@ -146,30 +194,42 @@ if (!window.contractsModule) {
 
         try {
 
-            const res = await fetch("/api/tenants");
+            const res =
+                await fetch("/api/tenants");
 
-            const tenants = await res.json();
+            const tenants =
+                await res.json();
 
             let html =
                 `<option value="">-- Chọn khách thuê --</option>`;
 
             tenants
-                .filter(t => t.IsRepresentative == 1)
+                .filter(t =>
+                    t.IsRepresentative == 1
+                )
                 .forEach(t => {
 
                     html += `
                         <option value="${t.TenantID}">
-                            ${t.FullName}
+                            ${t.FullName || ""}
                         </option>
                     `;
                 });
 
-            document.getElementById("tenantId").innerHTML =
-                html;
+            const tenantSelect =
+                document.getElementById("tenantId");
+
+            if (tenantSelect) {
+
+                tenantSelect.innerHTML = html;
+            }
 
         } catch (err) {
 
-            console.error("❌ Lỗi loadTenants:", err);
+            console.error(
+                "❌ Lỗi loadTenants:",
+                err
+            );
         }
     }
 
@@ -202,32 +262,31 @@ if (!window.contractsModule) {
                     document.getElementById("note").value.trim()
             };
 
-            // ================= VALIDATE =================
-
+            // VALIDATE
             if (!data.RoomID) {
 
-                alert("❌ Vui lòng chọn phòng");
+                alert("❌ Chọn phòng");
 
                 return;
             }
 
             if (!data.TenantID) {
 
-                alert("❌ Vui lòng chọn khách thuê");
+                alert("❌ Chọn khách thuê");
 
                 return;
             }
 
             if (!data.StartDate) {
 
-                alert("❌ Vui lòng chọn ngày bắt đầu");
+                alert("❌ Chọn ngày bắt đầu");
 
                 return;
             }
 
             if (!data.EndDate) {
 
-                alert("❌ Vui lòng chọn ngày kết thúc");
+                alert("❌ Chọn ngày kết thúc");
 
                 return;
             }
@@ -243,7 +302,6 @@ if (!window.contractsModule) {
 
             let res;
 
-            // ================= UPDATE =================
             if (editId) {
 
                 res = await fetch(
@@ -252,35 +310,41 @@ if (!window.contractsModule) {
                         method: "PUT",
 
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type":
+                                "application/json"
                         },
 
-                        body: JSON.stringify(data)
+                        body:
+                            JSON.stringify(data)
                     }
                 );
 
             } else {
 
-                // ================= CREATE =================
                 res = await fetch(
                     "/api/contracts",
                     {
                         method: "POST",
 
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type":
+                                "application/json"
                         },
 
-                        body: JSON.stringify(data)
+                        body:
+                            JSON.stringify(data)
                     }
                 );
             }
 
-            const result = await res.json();
+            const result =
+                await res.json();
 
             if (!res.ok) {
 
-                alert("❌ " + result.message);
+                alert(
+                    "❌ " + result.message
+                );
 
                 return;
             }
@@ -293,7 +357,10 @@ if (!window.contractsModule) {
 
         } catch (err) {
 
-            console.error("❌ Lỗi saveContract:", err);
+            console.error(
+                "❌ Lỗi saveContract:",
+                err
+            );
 
             alert("❌ Có lỗi xảy ra");
         }
@@ -303,15 +370,17 @@ if (!window.contractsModule) {
     function editContract(id) {
 
         const c =
-            contracts.find(x => x.ContractID == id);
+            contracts.find(x =>
+                x.ContractID == id
+            );
 
         if (!c) return;
 
         document.getElementById("roomId").value =
-            c.RoomID;
+            c.RoomID || "";
 
         document.getElementById("tenantId").value =
-            c.TenantID;
+            c.TenantID || "";
 
         document.getElementById("startDate").value =
             c.StartDate
@@ -338,28 +407,17 @@ if (!window.contractsModule) {
     // ================= DELETE =================
     async function deleteContract(id) {
 
-        if (!confirm("Xóa hợp đồng?")) {
-
+        if (!confirm("Xóa hợp đồng?"))
             return;
-        }
 
         try {
 
-            const res = await fetch(
+            await fetch(
                 "/api/contracts/" + id,
                 {
                     method: "DELETE"
                 }
             );
-
-            const result = await res.json();
-
-            if (!res.ok) {
-
-                alert("❌ " + result.message);
-
-                return;
-            }
 
             alert("🗑️ Đã xóa");
 
@@ -367,26 +425,29 @@ if (!window.contractsModule) {
 
         } catch (err) {
 
-            console.error("❌ Lỗi deleteContract:", err);
-
-            alert("❌ Có lỗi xảy ra");
+            console.error(
+                "❌ Lỗi deleteContract:",
+                err
+            );
         }
     }
 
     // ================= SEARCH =================
     function searchContract() {
 
-        const key = document
-            .getElementById("searchInput")
-            .value
-            .toLowerCase();
+        const key =
+            document
+                .getElementById("searchInput")
+                .value
+                .toLowerCase();
 
-        const filtered = contracts.filter(c =>
+        const filtered =
+            contracts.filter(c =>
 
-            (c.FullName || "")
-            .toLowerCase()
-            .includes(key)
-        );
+                (c.FullName || "")
+                    .toLowerCase()
+                    .includes(key)
+            );
 
         renderTable(filtered);
     }
@@ -395,33 +456,46 @@ if (!window.contractsModule) {
     function resetForm() {
 
         document
-            .querySelectorAll("#main input")
-            .forEach(i => i.value = "");
+            .querySelectorAll(
+                "#main input"
+            )
+            .forEach(i =>
+                i.value = ""
+            );
 
-        document.getElementById("roomId").value = "";
+        document.getElementById("roomId").value =
+            "";
 
-        document.getElementById("tenantId").value = "";
+        document.getElementById("tenantId").value =
+            "";
 
         document.getElementById("status").value =
             "Hiệu lực";
 
-        document.getElementById("note").value = "";
+        document.getElementById("note").value =
+            "";
 
         editId = null;
     }
 
     // ================= EXPORT =================
-    window.loadContracts = loadContracts;
+    window.loadContracts =
+        loadContracts;
 
-    window.saveContract = saveContract;
+    window.saveContract =
+        saveContract;
 
-    window.editContract = editContract;
+    window.editContract =
+        editContract;
 
-    window.deleteContract = deleteContract;
+    window.deleteContract =
+        deleteContract;
 
-    window.searchContract = searchContract;
+    window.searchContract =
+        searchContract;
 
-    window.resetForm = resetForm;
+    window.resetForm =
+        resetForm;
 
     // ================= INIT =================
     loadContracts();

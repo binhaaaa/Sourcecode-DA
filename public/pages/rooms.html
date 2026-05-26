@@ -1,79 +1,204 @@
-<h3>🏠 Quản lý phòng</h3>
+<h3 class="mb-4">
+    🏠 Quản lý phòng
+</h3>
 
-<!-- 🔍 Search -->
-<input id="searchRoom" class="form-control mb-3"
-       placeholder="Tìm theo số phòng..."
-       onkeyup="searchRoom()">
+<!-- ================= SEARCH ================= -->
 
-<!-- 📋 TABLE -->
+<input
+    id="searchRoom"
+    class="form-control mb-3"
+    placeholder="Tìm theo số phòng..."
+    onkeyup="searchRoom()"
+>
+
+<!-- ================= TABLE ================= -->
+
 <div class="table-wrapper">
+
     <table class="table table-bordered table-hover">
+
         <thead class="table-dark text-center">
+
             <tr>
+
                 <th>ID</th>
+
                 <th>Block</th>
+
                 <th>Tầng</th>
+
                 <th>Số phòng</th>
+
                 <th>Giá</th>
+
                 <th>Số người</th>
+
                 <th>Trạng thái</th>
+
                 <th>Mô tả</th>
+
                 <th>Hành động</th>
+
             </tr>
+
         </thead>
+
         <tbody id="roomTable"></tbody>
+
     </table>
+
 </div>
 
-<!-- ➕ FORM -->
-<h4>➕ Thêm / Sửa phòng</h4>
+<!-- ================= FORM ================= -->
 
-<input type="hidden" id="roomId">
+<hr>
 
-<div class="row">
-    <div class="col-md-6">
-        <label>Block</label>
-        <select id="blockSelect" class="form-control mb-2"></select>
+<h4 class="mb-3">
+    ➕ Thêm / Sửa phòng
+</h4>
+
+<div class="card p-3 shadow-sm">
+
+    <input
+        type="hidden"
+        id="roomId"
+    >
+
+    <!-- ROW 1 -->
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <select
+                id="blockSelect"
+                class="form-control mb-3"
+            >
+            </select>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <select
+                id="floorSelect"
+                class="form-control mb-3"
+            >
+            <option value="">
+                -- Chọn tầng --
+            </option>
+            
+            </select>
+
+        </div>
+
     </div>
 
-    <div class="col-md-6">
-        <label>Tầng</label>
-        <select id="floorSelect" class="form-control mb-2"></select>
-    </div>
-</div>
+    <!-- ROW 2 -->
 
-<div class="row">
-    <div class="col-md-6">
-        <input id="roomNumber" class="form-control mb-2" placeholder="Số phòng (VD: A101)">
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <input
+                id="roomNumber"
+                class="form-control mb-3"
+                placeholder="Số phòng (VD: A101)"
+            >
+
+        </div>
+
+        <div class="col-md-6">
+
+            <input
+                id="price"
+                type="number"
+                class="form-control mb-3"
+                placeholder="Giá phòng"
+            >
+
+        </div>
+
     </div>
 
-    <div class="col-md-6">
-        <input id="price" type="number" class="form-control mb-2" placeholder="Giá phòng">
-    </div>
-</div>
+    <!-- ROW 3 -->
 
-<div class="row">
-    <div class="col-md-6">
-        <input id="maxPeople" type="number" class="form-control mb-2" placeholder="Số người tối đa">
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <input
+                id="maxPeople"
+                type="number"
+                class="form-control mb-3"
+                placeholder="Số người tối đa"
+            >
+
+        </div>
+
+        <div class="col-md-6">
+
+            <select
+                id="status"
+                class="form-control mb-3"
+            >
+
+                <option value="Trống">
+                    Trống
+                </option>
+
+                <option value="Đang thuê">
+                    Đang thuê
+                </option>
+
+                <option value="Bảo trì">
+                    Bảo trì
+                </option>
+
+                <option value="Đã cọc">
+                    Đã cọc
+                </option>
+
+            </select>
+
+        </div>
+
     </div>
 
-    <div class="col-md-6">
-        <select id="status" class="form-control mb-2">
-    <option value="Trống">Trống</option>
-    <option value="Đang thuê">Đang thuê</option>
-    <option value="Bảo trì">Bảo trì</option>
-    <option value="Đã cọc">Đã cọc</option>
-</select>
-    </div>
-</div>
+    <!-- ROW 4 -->
 
-<div class="row">
-    <div class="col-md-12">
-        <input id="description" class="form-control mb-2" placeholder="Mô tả">
-    </div>
-</div>
+    <div class="row">
 
-<div class="mt-2">
-    <button class="btn btn-primary" onclick="saveRoom()">💾 Lưu</button>
-    <button class="btn btn-secondary" onclick="resetRoom()">🔄 Reset</button>
-</div>
+        <div class="col-md-12">
+
+            <input
+                id="description"
+                class="form-control mb-3"
+                placeholder="Mô tả"
+            >
+
+        </div>
+
+    </div>
+
+    <!-- BUTTON -->
+
+    <div class="mt-3">
+
+        <button
+            class="btn btn-primary"
+            onclick="saveRoom()"
+        >
+            💾 Lưu
+        </button>
+
+        <button
+            class="btn btn-secondary"
+            onclick="resetRoom()"
+        >
+            🔄 Reset
+        </button>
+
+    </div>
+
+</div>   

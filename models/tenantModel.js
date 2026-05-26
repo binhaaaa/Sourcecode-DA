@@ -8,7 +8,7 @@ async function getAll() {
     const result = await pool.request().query(`
         SELECT *
         FROM Tenants
-        ORDER BY TenantID DESC
+        ORDER BY TenantID ASC
     `);
 
     return result.recordset;

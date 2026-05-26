@@ -1,107 +1,506 @@
+/* ================= BODY ================= */
+
 body {
     display: flex;
+    margin: 0;
     font-family: Arial, sans-serif;
+    background: lightblue;
 }
 
-/* Sidebar */
-.sidebar {
+/* ================= SIDEBAR ================= */
+
+/* .sidebar {
     width: 220px;
-    background: #343a40;
-    color: white;
     height: 100vh;
-    padding: 10px;
+
+    background: lightblue;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    padding: 20px;
+
+    color: white;
+}
+
+.sidebar h4 {
+    margin-bottom: 30px;
 }
 
 .sidebar a {
+
     display: block;
-    padding: 10px;
-    cursor: pointer;
+
+    padding: 12px 15px;
+
+    margin-bottom: 8px;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 10px;
+
+    
 }
 
 .sidebar a:hover {
-    background: #495057;
-}
+    background: #34495e;
+}*/
 
-/* Content */
+/* ACTIVE MENU */
+
+.sidebar a.active {
+
+    background: #34495e;
+
+    font-size: 16px;
+
+    font-weight: normal;
+
+    color: white;
+} 
+/* ================= CONTENT ================= */
+
 .content {
-    flex: 1;
-    padding: 20px;
+
+    margin-left: 220px;
+
+    width: calc(100% - 220px);
+
+    padding: 30px;
 }
 
-/* TABLE */
-.table-wrapper {
-    max-height: 400px;
-    overflow-y: auto;
-    overflow-x: auto;   /* thêm scroll ngang */
-    border: 1px solid #ddd;
+/* ================= TITLE ================= */
+
+.content h3 {
+    margin-bottom: 30px;
+    font-size: 42px;
 }
 
-/* bảng */
-.table-wrapper {
-    max-height: 400px;
-    overflow: auto;
-    border: 1px solid #ddd;
-}
+/* ================= DASHBOARD ================= */
 
-/* table */
-table {
+.dashboard-cards {
+
+    display: flex;
+
+    gap: 20px;
+
+    margin-bottom: 30px;
+
     width: 100%;
+}
+
+/* CARD */
+
+.dashboard-card {
+
+    flex: 1;
+
+    height: 130px;
+
+    border-radius: 15px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    color: white;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+
+    transition: 0.2s;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+/* TEXT */
+
+.dashboard-card h5 {
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    margin-bottom: 10px;
+}
+
+.dashboard-card h4 {
+
+    font-size: 30px;
+
+    font-weight: bold;
+}
+
+/* ================= COLORS ================= */
+
+.bg-blue {
+    background: #2563eb;
+}
+
+.bg-green {
+    background: #2e8b57;
+}
+
+.bg-red {
+    background: #ef4444;
+}
+
+.bg-yellow {
+    background: #facc15;
+    color: black;
+}
+
+.bg-cyan {
+    background: #06b6d4;
+}
+
+.bg-purple {
+
+    background: #7c3aed;
+}
+
+.bg-darkblue {
+
+    background: #1e3a8a;
+}
+
+/* ================= CHART ================= */
+
+#roomChart {
+
+    width: 100% !important;
+
+    height: 100% !important;
+}
+
+/* ================= TABLE ================= */
+
+.table-wrapper {
+
+    max-height: 400px;
+
+    overflow-y: auto;
+
+    overflow-x: auto;
+
+    background: white;
+
+    border-radius: 10px;
+}
+
+table {
+
+    width: 100%;
+
     border-collapse: collapse;
 }
 
-/* cell */
 th, td {
-    text-align: center;
-    vertical-align: middle;
+
     padding: 12px;
+
+    text-align: center;
+
     border: 1px solid #ddd;
 }
 
-/* header */
 thead th {
+
     position: sticky;
+
     top: 0;
-    z-index: 2;
-    background: #212529;
-    color: white;
+
+    background: #212529 !important;
+
+    color: white !important;
 }
 
-/* mô tả */
-.description-cell {
-    width: 220px;
-    max-width: 220px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+/* ================= FORM ================= */
 
-/* action */
-.action-cell {
-    width: 150px;
-    white-space: nowrap;
-}
-
-/* Header sticky */
-thead th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    background: #212529;
-    color: white;
-}
-
-/* Hành động */
-.action-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-}
-
-.action-buttons button {
-    padding: 5px 10px;
-}
-
-/* Form */
-input, select {
+input,
+select {
     margin-bottom: 10px;
 }
+
+/* ================= CHART CONTAINER ================= */
+
+.chart-container {
+
+    width: 100%;
+
+    height: 500px;
+
+    position: relative;
+}
+
+/* canvas */
+
+#roomChart {
+
+    width: 100% !important;
+
+    height: 100% !important;
+}
+/* ================= BODY ================= */
+
+body {
+    display: flex;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+    width: 220px;
+    height: 100vh;
+
+    background: #2c3e50;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    padding: 20px;
+
+    color: white;
+}
+
+.sidebar h4 {
+    margin-bottom: 30px;
+}
+
+.sidebar a {
+
+    display: block;
+
+    padding: 12px 15px;
+
+    margin-bottom: 8px;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 10px;
+
+    
+}
+
+.sidebar a:hover {
+    background: #34495e;
+}
+
+/* ACTIVE MENU */
+
+.sidebar a.active {
+
+    background: #34495e;
+
+    font-size: 16px;
+
+    font-weight: normal;
+
+    color: white;
+} 
+/* ================= CONTENT ================= */
+
+.content {
+
+    margin-left: 220px;
+
+    width: calc(100% - 220px);
+
+    padding: 30px;
+}
+
+/* ================= TITLE ================= */
+
+.content h3 {
+    margin-bottom: 30px;
+    font-size: 42px;
+}
+
+/* ================= DASHBOARD ================= */
+
+.dashboard-cards {
+
+    display: flex;
+
+    gap: 20px;
+
+    margin-bottom: 30px;
+
+    width: 100%;
+}
+
+/* CARD */
+
+.dashboard-card {
+
+    flex: 1;
+
+    height: 130px;
+
+    border-radius: 15px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    color: white;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+
+    transition: 0.2s;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+/* TEXT */
+
+.dashboard-card h5 {
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    margin-bottom: 10px;
+}
+
+.dashboard-card h4 {
+
+    font-size: 30px;
+
+    font-weight: bold;
+}
+
+/* ================= COLORS ================= */
+
+.bg-blue {
+    background: #2563eb;
+}
+
+.bg-green {
+    background: #2e8b57;
+}
+
+.bg-red {
+    background: #ef4444;
+}
+
+.bg-yellow {
+    background: #facc15;
+    color: black;
+}
+
+.bg-cyan {
+    background: #06b6d4;
+}
+
+/* ================= CHART ================= */
+
+#roomChart {
+
+    width: 100% !important;
+
+    height: 100% !important;
+}
+
+/* ================= TABLE ================= */
+
+.table-wrapper {
+
+    max-height: 400px;
+
+    overflow-y: auto;
+
+    overflow-x: auto;
+
+    background: white;
+
+    border-radius: 10px;
+}
+
+table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+th,
+td {
+
+    padding: 12px;
+
+    text-align: center;
+
+    border: 1px solid #ddd;
+}
+
+thead th {
+
+    position: sticky;
+
+    top: 0;
+
+    background: #212529;
+
+    color: white;
+}
+
+/* ================= FORM ================= */
+
+input,
+select {
+    margin-bottom: 10px;
+}
+
+
+/* ================= FORM TITLE ================= */
+
+.form-title {
+
+    font-size: 28px !important;
+
+    margin-bottom: 20px !important;
+
+    font-weight: bold;
+}
+
+/* ================= CHART CONTAINER ================= */
+
+.chart-container {
+
+    width: 100%;
+
+    height: 500px;
+
+    position: relative;
+}
+
+/* canvas */
+
+#roomChart {
+
+    width: 100% !important;
+
+    height: 100% !important;
+}
+
